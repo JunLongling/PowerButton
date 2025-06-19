@@ -34,9 +34,9 @@ class MainActivity : AppCompatActivity() {
         ButtonItem(R.drawable.ic_volume, "VOLUME", R.drawable.bg_volume),
         ButtonItem(R.drawable.ic_screen_overlay, "SCREEN OVERLAY", R.drawable.bg_floating),
         ButtonItem(R.drawable.ic_power, "POWER MENU", R.drawable.bg_power),
-        ButtonItem(R.drawable.ic_close, "CLOSE APP", R.drawable.bg_close)
+        ButtonItem(R.drawable.ic_close, "CLOSE APP", R.drawable.bg_close),
+        ButtonItem(R.drawable.ic_uninstall, "Deactivate Admin", R.drawable.bg_close)
     )
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -88,6 +88,7 @@ class MainActivity : AppCompatActivity() {
                 "SCREEN OVERLAY" -> startScreenOverlay()
                 "POWER MENU" -> showPowerMenu()
                 "CLOSE APP" -> closeAppCompletely()
+                "Deactivate Admin" -> deactivateAdmin()
             }
         }
     }
@@ -112,6 +113,15 @@ class MainActivity : AppCompatActivity() {
     fun closeIfVisible() {
         if (isVisible) {
             finish()
+        }
+    }
+
+    private fun deactivateAdmin() {
+        if (devicePolicyManager.isAdminActive(componentName)) {
+            devicePolicyManager.removeActiveAdmin(componentName)
+            Toast.makeText(this, "Admin permission deactivated. You can uninstall the app now.", Toast.LENGTH_SHORT).show()
+        } else {
+            Toast.makeText(this, "Admin permission already deactivated. You can uninstall the app now.", Toast.LENGTH_SHORT).show()
         }
     }
 
