@@ -33,12 +33,12 @@ class MainActivity : AppCompatActivity() {
 
     private val buttonItems = listOf(
         ButtonItem(R.drawable.ic_lock, "LOCK SCREEN", R.drawable.bg_lock),
-        ButtonItem(R.drawable.ic_volume_up, "VOLUME UP", R.drawable.bg_volume),
-        ButtonItem(R.drawable.ic_volume_down, "VOLUME DOWN", R.drawable.bg_volume),
+        ButtonItem(R.drawable.ic_volume, "VOLUME", R.drawable.bg_volume),
         ButtonItem(R.drawable.ic_screen_overlay, "SCREEN OVERLAY", R.drawable.bg_floating),
         ButtonItem(R.drawable.ic_power, "POWER MENU", R.drawable.bg_power),
         ButtonItem(R.drawable.ic_close, "CLOSE APP", R.drawable.bg_close)
     )
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -86,8 +86,7 @@ class MainActivity : AppCompatActivity() {
                         requestDeviceAdmin()
                     }
                 }
-                "VOLUME UP" -> adjustVolume(AudioManager.ADJUST_RAISE)
-                "VOLUME DOWN" -> adjustVolume(AudioManager.ADJUST_LOWER)
+                "VOLUME" -> showSystemVolumeUI()
                 "SCREEN OVERLAY" -> startScreenOverlay()
                 "POWER MENU" -> showPowerMenu()
                 "CLOSE APP" -> closeAppCompletely()
@@ -134,24 +133,14 @@ class MainActivity : AppCompatActivity() {
         finishAndRemoveTask()
     }
 
-    private val hideRunnable = Runnable {
-        findViewById<TextView>(R.id.volumeIndicator)?.visibility = View.GONE
-    }
-
-    private fun adjustVolume(direction: Int) {
+    private fun showSystemVolumeUI() {
         val audioManager = getSystemService(Context.AUDIO_SERVICE) as AudioManager
-        audioManager.adjustStreamVolume(AudioManager.STREAM_MUSIC, direction, 0)
-
-        val current = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC)
-        val max = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC)
-        val percent = (current * 100) / max
-
-        val indicator = findViewById<TextView>(R.id.volumeIndicator)
-        indicator.text = getString(R.string.volume_indicator, percent)
-        indicator.visibility = View.VISIBLE
-
-        indicator.removeCallbacks(hideRunnable)
-        indicator.postDelayed(hideRunnable, 1000)
+        audioManager.adjustStreamVolume(
+            AudioManager.STREAM_MUSIC,
+            AudioManager.ADJUST_SAME,
+            AudioManager.FLAG_SHOW_UI
+        )
+        finishAndRemoveTask()
     }
 
     private fun startScreenOverlay() {
