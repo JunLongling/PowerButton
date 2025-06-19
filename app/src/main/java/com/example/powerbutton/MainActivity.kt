@@ -9,9 +9,7 @@ import android.media.AudioManager
 import android.os.Bundle
 import android.provider.Settings
 import android.view.Gravity
-import android.view.View
 import android.view.WindowManager
-import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
