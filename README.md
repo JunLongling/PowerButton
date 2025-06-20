@@ -1,5 +1,5 @@
 # PowerButton
-Power & Volume controls with overlay features
+An app for replacing power and volume buttons.
 ## Screenshots
 
 <img width="324" alt="lock" src="https://github.com/user-attachments/assets/0f5a7806-cde6-40b0-b420-8bbe04fdacc4" />
